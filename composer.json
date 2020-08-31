@@ -1,0 +1,38 @@
+{
+  "name": "naran/axis",
+  "description": "WordPress Must-Use (MU) Plugin for highly customized, modern PHP based websites.",
+  "type": "wordpress-plugin",
+  "license": "GPLv2 or later",
+  "authors": [
+    {
+      "name": "changwoo",
+      "email": "ep6tri@hotmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Naran\\Axis\\": "src/",
+      "Naran\\Axis\\Watch\\": "watch/"
+    },
+    "files": [
+      "src/Func/Global.php",
+      "src/Func/HtmlOutput.php",
+      "src/Func/Util.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Naran\\Axis\\Test\\": "tests/"
+    }
+  },
+  "require": {
+    "erusev/parsedown-extra": "^0.8.1",
+    "illuminate/config": "^7.25",
+    "illuminate/container": "^7.25",
+    "illuminate/database": "^7.25",
+    "illuminate/pagination": "^7.25",
+    "illuminate/view": "^7.25",
+    "doctrine/annotations": "^1.10",
+    "doctrine/cache": "^1.10"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "methodCalls": [
+    {
+      "class": "\\Naran\\Axis\\Object\\ComponentTrait",
+      "method": "resolve",
+      "position": 0
+    },
+    {
+      "class": "\\Illuminate\\Container\\Container",
+      "method": "make",
+      "position": 0
+    },
+    {
+      "class": "\\Illuminate\\Container\\Container",
+      "method": "get",
+      "position": 0
+    }
+  ]
+}

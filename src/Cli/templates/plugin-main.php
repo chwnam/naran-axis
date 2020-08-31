@@ -29,7 +29,7 @@ echo '<?php' . PHP_EOL;
  * Textdomain:  <?= $textdomain . PHP_EOL ?>
  */
 
-define('<?php echo strtoupper($slug); ?>_MAIN_FILE', __FILE__);
+define('<?php echo strtoupper($slug); ?>_MAIN', __FILE__);
 define('<?php echo strtoupper($slug); ?>_VERSION', '<?= $version ?>');
 define('<?php echo strtoupper($slug); ?>_SLUG', '<?= $slug ?>');
 
@@ -46,7 +46,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 axisStart(
     [
-        'mainFile'  => <?php echo strtoupper($slug); ?>_MAIN_FILE,
+        'main_file' => <?php echo strtoupper($slug); ?>_MAIN,
         'version'   => <?php echo strtoupper($slug); ?>_VERSION,
         'namespace' => '<?= addslashes($namespace) ?>',
     ]

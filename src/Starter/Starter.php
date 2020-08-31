@@ -52,10 +52,10 @@ class Starter
                  *
                  * @var string
                  */
-                'mainFile'        => '',
+                'main_file'        => '',
 
                 /**
-                 * Unique identifier of the plugin. Defaults to directory of the plugin, or basename of $mainFile.
+                 * Unique identifier of the plugin. Defaults to directory of the plugin, or basename of $main_file.
                  *
                  * @var string
                  */
@@ -78,11 +78,11 @@ class Starter
                 'namespace'       => '',
 
                 /**
-                 * Plugin's sub-directory where its namespace is mapped. Defaults to `dirname($mainFile)/src`.
+                 * Plugin's sub-directory where its namespace is mapped. Defaults to `dirname($main_file)/src`.
                  *
                  * @var null|string
                  */
-                'srcPath'         => null,
+                'src'         => null,
 
                 /**
                  * Textdomain string. Assign this value to load plugin's translation file automatically.
@@ -96,70 +96,70 @@ class Starter
                  *
                  * @var string
                  */
-                'prefixStem'      => '',
+                'prefix'      => '',
 
                 /**
                  * For multisite. Plugin only starts when the current blog id is matched. Defaults to null.
                  *
                  * @var int|int[]|callable|null
                  */
-                'blogId'          => null,
+                'blog_id'          => null,
 
                 /**
                  * Assign a region filter. Defaults to null, or AllGrantedRegionFilter.
                  *
                  * @var null|RegionFilter
                  */
-                'regionFilter'    => null,
+                'region_filter'    => null,
 
                 /**
                  * Assign a context filter. Defaults to null, or RequestContextContextFilter.
                  *
                  * @var null|ContextFilter
                  */
-                'contextFilter'   => null,
+                'context_filter'   => null,
 
                 /**
                  * Assign a class finder. Defaults to null, AutoDiscoverClassFinder.
                  *
                  * @var null|ClassFinder
                  */
-                'classFinder'     => null,
+                'class_finder'     => null,
 
                 /**
                  * Assign class resolvers. Defaults to null.
                  *
                  * @var null|ClassResolver[]
                  */
-                'classResolvers'  => null,
+                'class_resolvers'  => null,
 
                 /**
                  * Callback. Invoked before start() method is called.
                  *
                  * @var null|callable
                  */
-                'beforeStart'     => null,
+                'before_start'     => null,
 
                 /**
                  * The plugin's default action, filter priority. Defaults to 10.
                  *
                  * @var int
                  */
-                'defaultPriority' => 10,
+                'default_priority' => 10,
 
                 /**
                  * Use Blade template engine.
                  *
                  * @var bool
                  */
-                'useBlade'        => true,
+                'use_blade'        => true,
 
                 /**
                  * Use Eloquent ORM.
                  *
                  * @var bool
                  */
-                'useEloquent'     => true,
+                'use_eloquent'     => true,
             ]
         );
 
@@ -168,12 +168,12 @@ class Starter
         $starter->container->instance(static::class, $starter);
         $starter->container->alias(static::class, 'starter');
 
-        // Setup mainFile
-        if ($args['mainFile']) {
-            $starter->container->instance('starter.mainFile', $args['mainFile']);
+        // Setup main_file
+        if ($args['main_file']) {
+            $starter->container->instance('starter.main_file', $args['main_file']);
         } else {
             throw new StarterFailureException(
-                __('Argument \'mainFile\' is required.', 'naran-axis')
+                __('Argument \'main_file\' is required.', 'naran-axis')
             );
         }
 
@@ -182,7 +182,7 @@ class Starter
         if ($args['slug']) {
             $starter->container->instance('starter.slug', $args['slug']);
         } else {
-            $dir = dirname($args['mainFile']);
+            $dir = dirname($args['main_file']);
             if (WP_PLUGIN_DIR === $dir) {
                 // The plugin is a single file so that slug is named after its file name.
                 $starter->container->instance('starter.slug', pathinfo($starter->getMainFile(), PATHINFO_FILENAME));
@@ -202,19 +202,19 @@ class Starter
             $starter->container->instance('starter.namespace', trim($args['namespace'], '\\') . '\\');
         }
 
-        // Setup srcPath.
-        if ($args['srcPath']) {
-            $starter->container->instance('starter.srcPath', untrailingslashit($args['srcPath']));
+        // Setup src.
+        if ($args['src']) {
+            $starter->container->instance('starter.src', untrailingslashit($args['src']));
         } else {
-            $starter->container->instance('starter.srcPath', dirname($starter->getMainFile()) . '/src');
+            $starter->container->instance('starter.src', dirname($starter->getMainFile()) . '/src');
         }
 
         // Setup prefix.
-        $args['prefixStem'] = rtrim(sanitize_key($args['prefixStem']), '-_');
-        if ($args['prefixStem']) {
-            $starter->container->instance('starter.prefixStem', $args['prefixStem']);
+        $args['prefix'] = rtrim(sanitize_key($args['prefix']), '-_');
+        if ($args['prefix']) {
+            $starter->container->instance('starter.prefix', $args['prefix']);
         } else {
-            $starter->container->instance('starter.prefixStem', rtrim($starter->getSlug(), '-_'));
+            $starter->container->instance('starter.prefix', rtrim($starter->getSlug(), '-_'));
         }
 
         // Setup textdomain.
@@ -225,32 +225,32 @@ class Starter
             $starter->container->instance('starter.textdomain', '');
         }
 
-        // Setup blogId
-        if (is_numeric($args['blogId']) || (is_array($args['blogId']) && ! is_callable($args['blogId']))) {
-            $starter->container->instance('starter.blogId', array_filter(array_map('intval', (array)$args['blogId'])));
-        } elseif (is_callable($args['blogId'])) {
-            $starter->container->instance('starter.blogId', $args['blogId']);
+        // Setup blog_id
+        if (is_numeric($args['blog_id']) || (is_array($args['blog_id']) && ! is_callable($args['blog_id']))) {
+            $starter->container->instance('starter.blog_id', array_filter(array_map('intval', (array)$args['blog_id'])));
+        } elseif (is_callable($args['blog_id'])) {
+            $starter->container->instance('starter.blog_id', $args['blog_id']);
         } else {
-            $starter->container->instance('starter.blogId', null);
+            $starter->container->instance('starter.blog_id', null);
         }
 
-        // Setup regionFilter
-        if ($args['regionFilter']) {
-            $starter->container->bindIf(RegionFilter::class, $args['regionFilter']);
+        // Setup region_filter
+        if ($args['region_filter']) {
+            $starter->container->bindIf(RegionFilter::class, $args['region_filter']);
         } else {
             $starter->container->bindIf(RegionFilter::class, AllGrantedRegionFilter::class);
         }
 
-        // Setup contextFilter
-        if ($args['contextFilter']) {
-            $starter->container->bindIf(ContextFilter::class, $args['contextFilter']);
+        // Setup context_filter
+        if ($args['context_filter']) {
+            $starter->container->bindIf(ContextFilter::class, $args['context_filter']);
         } else {
             $starter->container->bindIf(ContextFilter::class, RequestContextContextFilter::class);
         }
 
-        // Setup classFinder
-        if ($args['classFinder']) {
-            $starter->container->bindIf(ClassFinder::class, $args['classFinder']);
+        // Setup class_finder
+        if ($args['class_finder']) {
+            $starter->container->bindIf(ClassFinder::class, $args['class_finder']);
         } else {
             $starter->container->bindIf(
                 ClassFinder::class,
@@ -265,11 +265,11 @@ class Starter
         }
 
         // Setup resolvers
-        if ($args['classResolvers']) {
-            $starter->container->bindIf('classResolvers', $args['classResolvers']);
+        if ($args['class_resolvers']) {
+            $starter->container->bindIf('class_resolvers', $args['class_resolvers']);
         } else {
             $starter->container->bindIf(
-                'classResolvers',
+                'class_resolvers',
                 function ($app) {
                     /** @var Container $app */
                     $starter       = $app->make(Starter::class);
@@ -286,19 +286,19 @@ class Starter
         }
 
         // Default priority.
-        $starter->container->instance('starter.defaultPriority', intval($args['defaultPriority']));
+        $starter->container->instance('starter.default_priority', intval($args['default_priority']));
 
         // Blade template.
-        $starter->container->instance('starter.useBlade', boolval($args['useBlade']));
+        $starter->container->instance('starter.use_blade', boolval($args['use_blade']));
 
         // Eloquent ORM.
-        $starter->container->instance('starter.useEloquent', boolval($args['useEloquent']));
+        $starter->container->instance('starter.use_eloquent', boolval($args['use_eloquent']));
 
         // End of configuration!
         StarterPool::getInstance()->addStarter($starter);
 
-        if (is_callable($args['beforeStart'])) {
-            call_user_func($args['beforeStart'], $starter->container, $starter);
+        if (is_callable($args['before_start'])) {
+            call_user_func($args['before_start'], $starter->container, $starter);
         }
 
         return $starter;
@@ -313,7 +313,7 @@ class Starter
             $this->prepareBlade();
             $this->prepareEloquent();
 
-            foreach ($this->getContainer()->make('classResolvers') as $resolver) {
+            foreach ($this->getContainer()->make('class_resolvers') as $resolver) {
                 /** @var ClassResolver $resolver */
                 $resolver->resolve();
             }
@@ -350,7 +350,7 @@ class Starter
      */
     public function getMainFile()
     {
-        return $this->container['starter.mainFile'];
+        return $this->container['starter.main_file'];
     }
 
     /**
@@ -380,7 +380,7 @@ class Starter
      */
     public function getSrcPath()
     {
-        return $this->container['starter.srcPath'];
+        return $this->container['starter.src'];
     }
 
     /**
@@ -412,7 +412,7 @@ class Starter
      */
     public function getPrefix($preferDash = false)
     {
-        return $this->container['starter.prefixStem'] . ($preferDash ? '-' : '_');
+        return $this->container['starter.prefix'] . ($preferDash ? '-' : '_');
     }
 
     /**
@@ -435,7 +435,7 @@ class Starter
      */
     public function getBlogId()
     {
-        return $this->container['starter.blogId'];
+        return $this->container['starter.blog_id'];
     }
 
     /**
@@ -445,7 +445,7 @@ class Starter
      */
     public function getDefaultPriority()
     {
-        return $this->container['starter.defaultPriority'];
+        return $this->container['starter.default_priority'];
     }
 
     /**
@@ -455,7 +455,7 @@ class Starter
      */
     public function useBlade()
     {
-        return $this->container['starter.useBlade'];
+        return $this->container['starter.use_blade'];
     }
 
     /**
@@ -465,7 +465,7 @@ class Starter
      */
     public function useEloquent()
     {
-        return $this->container['starter.useEloquent'];
+        return $this->container['starter.use_eloquent'];
     }
 
     protected function isAvailable()

@@ -4,7 +4,7 @@
 namespace Naran\Axis\Object;
 
 
-use Illuminate\Contracts\Container\BindingResolutionException;
+use Naran\Illuminate\Contracts\Container\BindingResolutionException;
 use Naran\Axis\Container\Container;
 use Naran\Axis\Starter\Starter;
 use Naran\Axis\View\View;

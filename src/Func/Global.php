@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Contracts\Container\BindingResolutionException;
+use Naran\Illuminate\Contracts\Container\BindingResolutionException;
 use Naran\Axis\Starter\Starter;
 use Naran\Axis\Starter\StarterFailureException;
 use Naran\Axis\Starter\StarterPool;

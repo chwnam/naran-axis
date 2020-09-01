@@ -26,13 +26,38 @@
     }
   },
   "require": {
-    "erusev/parsedown-extra": "^0.8.1",
-    "illuminate/config": "^7.25",
-    "illuminate/container": "^7.25",
-    "illuminate/database": "^7.25",
-    "illuminate/pagination": "^7.25",
-    "illuminate/view": "^7.25",
+    "illuminate/config": "^7.26",
+    "illuminate/container": "^7.26",
+    "illuminate/database": "^7.26",
+    "illuminate/pagination": "^7.26",
+    "illuminate/view": "^7.26",
     "doctrine/annotations": "^1.10",
-    "doctrine/cache": "^1.10"
+    "doctrine/cache": "^1.10",
+    "erusev/parsedown-extra": "^0.8.1"
+  },
+  "require-dev": {
+    "bamarni/composer-bin-plugin": "^1.4"
+  },
+  "scripts": {
+    "post-update-cmd": [
+      "@composer php-scope-install",
+      "@composer create-vendor-axis",
+      "@composer scoped-dump-autoload"
+    ],
+    "php-scope-install": [
+      "@composer bin php-scoper require --dev jetbrains/phpstorm-stubs:dev-master",
+      "@composer bin php-scoper require --dev humbug/php-scoper"
+    ],
+    "create-vendor-axis": [
+      "rm -rf vendor-axis",
+      "vendor/bin/php-scoper add-prefix --output-dir=vendor-axis --force",
+      "rm -rf vendor-axis/vendor-bin",
+      "cp composer.json composer.lock vendor-axis"
+    ],
+    "scoped-dump-autoload": [
+      "@composer dump-autoload --working-dir vendor-axis",
+      "find vendor-axis/vendor/composer -name '*.php' -exec sed -i -e 's/\\dirname(\\$vendorDir);/\\dirname(\\dirname(\\$vendorDir));/' {} \\;",
+      "find vendor-axis/vendor/composer -name '*.php' -exec sed -i -e 's/__DIR__ . '\\''\\/..\\/..'\\'' ./__DIR__ . '\\''\\/..\\/..\\/..'\\'' ./' {} \\;"
+    ]
   }
 }

@@ -4,10 +4,10 @@
 namespace Naran\Axis\Starter;
 
 
-use Illuminate\Contracts\Container\BindingResolutionException;
-use Illuminate\Events\Dispatcher;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\View\ViewServiceProvider;
+use Naran\Illuminate\Contracts\Container\BindingResolutionException;
+use Naran\Illuminate\Events\Dispatcher;
+use Naran\Illuminate\Filesystem\Filesystem;
+use Naran\Illuminate\View\ViewServiceProvider;
 use Naran\Axis\Container\Container;
 use Naran\Axis\Model\Connection;
 use Naran\Axis\Repository\Repository;

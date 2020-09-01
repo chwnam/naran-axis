@@ -2,7 +2,7 @@
 
 namespace Naran\Axis\Container;
 
-use Illuminate\Container\Container as ContainerBase;
+use Naran\Illuminate\Container\Container as ContainerBase;
 
 class Container extends ContainerBase
 {

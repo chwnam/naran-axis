@@ -3,7 +3,7 @@
 
 namespace Naran\Axis\Initiator;
 
-use Illuminate\Contracts\Container\BindingResolutionException;
+use Naran\Illuminate\Contracts\Container\BindingResolutionException;
 use Naran\Axis\View\Dispatchable;
 
 use function Naran\Axis\Func\strStartsWith;

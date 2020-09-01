@@ -5,8 +5,8 @@ namespace Naran\Axis\Model;
 
 
 use Exception;
-use Illuminate\Database\MySqlConnection;
-use Illuminate\Database\QueryException;
+use Naran\Illuminate\Database\MySqlConnection;
+use Naran\Illuminate\Database\QueryException;
 use wpdb;
 
 

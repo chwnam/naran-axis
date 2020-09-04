@@ -16,14 +16,18 @@
     },
     "files": [
       "src/Func/Global.php",
+      "src/Func/Hangul.php",
       "src/Func/HtmlOutput.php",
       "src/Func/Util.php"
     ]
   },
   "autoload-dev": {
     "psr-4": {
-      "Naran\\Axis\\Test\\": "tests/"
-    }
+      "Naran\\Axis\\Tests\\": "tests/"
+    },
+    "files" : [
+      "tests/Utils.php"
+    ]
   },
   "require": {
     "illuminate/config": "^7.26",
@@ -55,6 +59,7 @@
       "cp composer.json composer.lock vendor-axis"
     ],
     "scoped-dump-autoload": [
+      "cp composer.json composer.lock vendor-axis",
       "@composer dump-autoload --working-dir vendor-axis",
       "find vendor-axis/vendor/composer -name '*.php' -exec sed -i -e 's/\\dirname(\\$vendorDir);/\\dirname(\\dirname(\\$vendorDir));/' {} \\;",
       "find vendor-axis/vendor/composer -name '*.php' -exec sed -i -e 's/__DIR__ . '\\''\\/..\\/..'\\'' ./__DIR__ . '\\''\\/..\\/..\\/..'\\'' ./' {} \\;"

@@ -404,7 +404,7 @@ function listTag(
     }
     closeTag($tag);
 
-    if ( ! $escape) {
+    if ( ! $echo) {
         return ob_get_clean();
     }
 

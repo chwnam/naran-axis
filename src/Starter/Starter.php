@@ -59,14 +59,14 @@ class Starter
                  *
                  * @var string
                  */
-                'slug'            => '',
+                'slug'             => '',
 
                 /**
                  * Plugin version. Defaults to empty string.
                  *
                  * @var string
                  */
-                'version'         => '',
+                'version'          => '',
 
                 /**
                  * Plugin base namespace. Defaults to empty string.
@@ -75,28 +75,28 @@ class Starter
                  *
                  * @var string
                  */
-                'namespace'       => '',
+                'namespace'        => '',
 
                 /**
                  * Plugin's sub-directory where its namespace is mapped. Defaults to `dirname($main_file)/src`.
                  *
                  * @var null|string
                  */
-                'src'         => null,
+                'src'              => null,
 
                 /**
                  * Textdomain string. Assign this value to load plugin's translation file automatically.
                  *
                  * @var string
                  */
-                'textdomain'      => '',
+                'textdomain'       => '',
 
                 /**
                  * Prefix string without trailing underscore or hyphen. Defaults to $slug.
                  *
                  * @var string
                  */
-                'prefix'      => '',
+                'prefix'           => '',
 
                 /**
                  * For multisite. Plugin only starts when the current blog id is matched. Defaults to null.
@@ -200,13 +200,31 @@ class Starter
         // Setup namespace.
         if (is_string($args['namespace']) && ! empty($args['namespace'])) {
             $starter->container->instance('starter.namespace', trim($args['namespace'], '\\') . '\\');
+        } else {
+            throw new StarterFailureException(
+                __('Argument \'namespace\' is required.', 'naran-axis')
+            );
         }
 
         // Setup src.
-        if ($args['src']) {
-            $starter->container->instance('starter.src', untrailingslashit($args['src']));
-        } else {
+        if (is_null($args['src'])) {
             $starter->container->instance('starter.src', dirname($starter->getMainFile()) . '/src');
+        } elseif ($args['src']) {
+            $starter->container->instance('starter.src', untrailingslashit(realpath($args['src'])));
+        } else {
+            throw new StarterFailureException(
+                __('Please leave \'src\' as null, or set a specific absolute directory. ', 'naran-axis')
+            );
+        }
+
+        if (
+            ! is_dir($starter->getSrcPath()) ||
+            ! is_executable($starter->getSrcPath()) ||
+            ! is_readable($starter->getSrcPath())
+        ) {
+            throw new StarterFailureException(
+                __('\'src\' must be an absolute directory which is accessible, and readable.', 'naran-axis')
+            );
         }
 
         // Setup prefix.
@@ -227,7 +245,10 @@ class Starter
 
         // Setup blog_id
         if (is_numeric($args['blog_id']) || (is_array($args['blog_id']) && ! is_callable($args['blog_id']))) {
-            $starter->container->instance('starter.blog_id', array_filter(array_map('intval', (array)$args['blog_id'])));
+            $starter->container->instance(
+                'starter.blog_id',
+                array_filter(array_map('intval', (array)$args['blog_id']))
+            );
         } elseif (is_callable($args['blog_id'])) {
             $starter->container->instance('starter.blog_id', $args['blog_id']);
         } else {

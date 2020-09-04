@@ -17,7 +17,6 @@ return [
         Finder::create()
               ->files()
               ->ignoreVCS(true)
-              ->notPath('bamarni')
               ->notName('/LICENSE|.*\\.md|.*\\.dist|Makefile|composer\\.json|composer\\.lock/')
               ->exclude(
                   [
@@ -46,6 +45,10 @@ return [
     // For more see: https://github.com/humbug/php-scoper#patchers
     'patchers'                   => [
         function (string $filePath, string $prefix, string $contents): string {
+            if (preg_match('/polyfill-[^\/]+\/bootstrap\.php$/', $filePath)) {
+                $contents = str_replace("namespace {$prefix};\n", '', $contents);
+            }
+
             // Change the contents here.
             return $contents;
         },

@@ -1,10 +1,17 @@
 <?php
 
+use Naran\Axis\Container\Container;
 use Naran\Illuminate\Contracts\Container\BindingResolutionException;
 use Naran\Axis\Starter\Starter;
 use Naran\Axis\Starter\StarterFailureException;
 use Naran\Axis\Starter\StarterPool;
 
+
+/**
+ * Start axis based plugin.
+ *
+ * @param array $args
+ */
 function axisStart($args = [])
 {
     try {
@@ -17,12 +24,26 @@ function axisStart($args = [])
 }
 
 
+/**
+ * Get starter.
+ *
+ * @param $slug
+ *
+ * @return Starter|null
+ */
 function axisGetStarter($slug)
 {
     return StarterPool::getInstance()->getStarter($slug);
 }
 
 
+/**
+ * Get container of plugin.
+ *
+ * @param $slug
+ *
+ * @return Container|null
+ */
 function axisGetContainer($slug)
 {
     $starter = AxisGetStarter($slug);
@@ -32,6 +53,8 @@ function axisGetContainer($slug)
 
 
 /**
+ * Resolve any instance of plugin.
+ *
  * @param string $slug
  * @param string $abstract
  * @param array  $parameters

@@ -4,6 +4,8 @@ namespace Naran\Axis\Func;
 
 
 /**
+ * Check if haystack is starts with needle string.
+ *
  * @param string $haystack
  * @param string $needle
  *
@@ -16,6 +18,8 @@ function strStartsWith(string $haystack, string $needle): bool
 
 
 /**
+ * Check if haystack is ends with needle string.
+ *
  * @param string $haystack
  * @param string $needle
  *
@@ -35,22 +39,22 @@ function strEndsWith(string $haystack, string $needle): bool
 /**
  * @sample thisIsASnakeCasedSentence ==> this_is_a_snake_cased_sentence
  *
- * @param string $string 입력 단어.
- * @param string $glue   띄어쓰기 문자. 기본은 언더바 '_'
+ * @param string $string
+ * @param string $glue
  *
  * @return string
  */
 function toSnakeCase(string $string, string $glue = '_'): string
 {
-    return strtolower(preg_replace('/(?<=\d)(?=[A-Za-z])|(?<=[A-Za-z])(?=\d)|(?<=[a-z])(?=[A-Z])/', $glue, $string));
+    return strtolower(preg_replace('/(?<=\d)(?=[A-Za-z])|(?<=[A-Za-z])(?=\d)|(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z])/', $glue, $string));
 }
 
 
 /**
  * @sample this_is_a_pascal_cased_sentence ==> ThisIsAPascalCasedSentence
  *
- * @param string $string 입력 단어.
- * @param string $glue   띄어쓰기 문자. 기본은 언더바 '_'
+ * @param string $string
+ * @param string $glue
  *
  * @return string
  */
@@ -63,8 +67,8 @@ function toPascalCase(string $string, string $glue = '_'): string
 /**
  * @sample this_is_a_camel_cased_sentence ==> thisIsACamelCasedSentence
  *
- * @param string $string 입력 단어.
- * @param string $glue   띄어쓰기 문자. 기본은 언더바 '_'
+ * @param string $string
+ * @param string $glue
  *
  * @return string
  */
@@ -74,6 +78,13 @@ function toCamelCase(string $string, string $glue = '_'): string
 }
 
 
+/**
+ * Check type of current request.
+ *
+ * @param $request
+ *
+ * @return bool
+ */
 function isRequest($request)
 {
     switch ($request) {
@@ -111,11 +122,18 @@ function isRequest($request)
             return defined('REST_REQUEST') && REST_REQUEST;
 
         default:
-            return apply_filters('Naran\\Axis\\Functions\\isRequest', true);
+            return apply_filters('naran_axis_is_request', true);
     }
 }
 
 
+/**
+ * Get path part from given URL.
+ *
+ * @param string|null $url null for current request uri.
+ *
+ * @return false|string
+ */
 function getUrlPath($url = null)
 {
     if ( ! $url) {
